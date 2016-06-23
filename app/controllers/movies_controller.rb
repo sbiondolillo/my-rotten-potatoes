@@ -1,10 +1,15 @@
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
+    @movies = Movie.all.sort_by &:title
   end
   
   def show
-    @movie = Movie.find(params[:id])
+    begin
+      @movie = Movie.find(params[:id])
+    rescue
+      flash[:notice] = "The movie you requested was not found"
+      redirect_to movies_path
+    end
   end
   
   def new
@@ -13,7 +18,7 @@ class MoviesController < ApplicationController
   def create
     @movie = Movie.create!(movie_params)
     flash[:notice] = "#{@movie.title} was successfully created."
-    redirect_to movies_path
+    redirect_to movie_path(@movie)
   end
   
   def edit
@@ -37,7 +42,7 @@ class MoviesController < ApplicationController
   private
   
     def movie_params
-      params.require(:movie).permit(:title,:rating,:release_date)
+      params.require(:movie).permit(:title,:rating,:description,:release_date)
     end
   
 end
