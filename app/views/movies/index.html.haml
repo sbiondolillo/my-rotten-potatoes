@@ -13,6 +13,8 @@
         %td= movie.title 
         %td= movie.rating
         %td= movie.release_date
-        %td= link_to "More about #{movie.title}", movie_path(movie)
+        %td= link_to "More about #{movie.title}", movie_path(movie) 
+        %td= link_to 'Edit', edit_movie_path(movie) 
+        %td= link_to 'Delete', movie_path(movie), :method => :delete, data: {confirm: "Are you sure?"}
         
 = link_to "Add New Movie", new_movie_path
